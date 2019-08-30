@@ -1,30 +1,29 @@
 from django.db import models
-from .logic import AssesEmailDates
 
 
 class EmailList(models.Model):
 
     email = EmailField()
+    dispatch_date = DateTimeField()
+
+    def __str__(self):
+        return self.email
 
 
 class DatesSkipList(models.Model):
 
-    day_skip = DateTimeField()
+    date = DateTimeField()
+
+    def __str__(self):
+        return self.date
 
 
 class Schedule(models.Model):
 
-    contacts = models.ForeignKey(
-        'EmailList',
-        on_delete=models.CASCADE)
+    contacts = models.ManyToManyField(
+        EmailList,
+        )
 
-    days_to_skip = models.ForeignKey(
-        'DatesSkipList',
-        on_delete=CASCADE)
-
-
-class EmailSend(AssesEmailDates, models.Model):
-
-    email = EmailField()
-    scheduled_date = DateTimeField()
-
+    days_to_skip = models.ManyToManyField(
+        DatesSkipList,
+        )

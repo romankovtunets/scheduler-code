@@ -42,21 +42,23 @@ class AssesEmailDates():
     def assesing_datetime(self):
         """
         Asses dispatch time to each email in the list
+        return: dict
         """
         # set starting date
         dispatch_date = self.get_dispatch_date()
         # set pause between dispatches
         next_5_min = timedelta(minutes=5)
 
+        dispatches = {}
+
         # while contact list is not empty
         while self.emails:
             # ten dispatches for a day
             for i in range(10):
-                # get EmailModel instance
-                email = super().__init__()
-                email.email = self.emails.pop
-                email.scheduled_date = dispatch_date
-                email.save()
+                dispatches[self.emails.pop()] = dispatch_date
                 dispatch_date += next_5_min
+
             # get next day if contact list is not empty and 10 dispatches done
             dispatch_date = self.get_dispatch_date(dispatch_date.replace(hour=23))
+
+        return dispatches
